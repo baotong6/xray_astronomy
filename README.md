@@ -1,4 +1,4 @@
-# Xray_astronomy(2021)
+# Xray_astronomy(2022)
 Course assignment
 </p>
 If any questions, please contact me.(Wechat or my mailbox(baotong@smail.nju.edu.cn))
@@ -10,7 +10,9 @@ Read "xmm_abc_guide.pdf" first(chapter 5&6).
 
 Run "run_XMMproducts_spectra.py" to process the data, extract the light curve and spectra.
 
-Run "lc_analysis.py"  to do QPO-searching.
+Run "lc_process.py"  to do light curve analysis.
+
+(Make sure the code_2022 and lc_process.py is in the same parent directory!)
 
 
 # Fit the spectra with model
