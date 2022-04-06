@@ -13,7 +13,7 @@ srcname='V396_Hya'
 mode='pn'
 
 ###------ 1. get event list -----###
-# funcs.get_txt(path,obsID=obsID,mode=mode,srcname=srcname,reg_cicrle=reg_circle,band=[200,10000])
+funcs.get_txt(path,obsID=obsID,mode=mode,srcname=srcname,reg_cicrle=reg_circle,band=[200,10000])
 
 ###------ 2. load data -----###
 src_evt=np.loadtxt(path+obsID+'/txt/'+srcname+'_'+mode+'.txt')
