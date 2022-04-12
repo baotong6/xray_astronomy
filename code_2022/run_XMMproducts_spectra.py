@@ -170,17 +170,6 @@ for obsID in obsList:
             sasname=f.readline()
          print(sasname)
          os.environ['SAS_ODF'] = path + obsID + "/cal/"+sasname[0:-1]
-         ###----------------------------------###
-         # ##------barycen-----##
-         # cmd = "cp " + det + "_filt_time.fits " + det + "_filt_time_bary.fits"
-         # print(cmd)
-         # os.system(cmd)
-         # cmd = "barycen withtable=yes table=" + det + "_filt_time_bary.fits" + ": withsrccoordinates=yes srcra=" + str(
-         #    ra) + " srcdec=" + str(dec)
-         # print(cmd)
-         # os.system(cmd)
-         #
-         # print("0 barycenter correction for cleaned events")
          ##------------------##
          if tmin==0 and tmax==0:
             event=fits.open(det+"_filt_time_bary.fits")
