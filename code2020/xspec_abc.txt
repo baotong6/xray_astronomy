@@ -1,0 +1,28 @@
+以CP_Tuc为例
+heainit ##初始化heasoft
+##-----对光谱文件做binning ,按照每30个光子为1个bin##
+grppha pn_CP_Tuc.pha pn_CP_Tuc_bin30.pha
+group min 30
+exit
+##-------------------------------------------##
+xspec  ##打开xspec
+da ***.pha ##打开自己所研究源的光谱文件，如pn_CP_Tuc.pha
+setp e ##setplot energy的缩写，把横坐标改为能量
+cpd /xw  ##新建窗口
+ignore **-0.1 ##忽略小于0.1keV和大于10keV的光谱
+ignore 10.-** 这里的数值请根据自己光谱的图像来调节
+pl ld  ##plot ldata的缩写，取对数并画图
+mo pha*pcf*mkcf  ##拟合模型，模型为phabs*pcfabs*mkcf
+##这个操作以后一直敲回车，跳过参数的初始值设置##
+new 4 0.09 0 ##将lowT固定在0.09处，第二个0是与freeze 4同等的效果
+new 7 1e-5 0 ##将redshift固定在1e-5处，第二个0是与freeze 7同等的效果
+fit       ##开始拟合
+pl ld del  ##plot 并画出残差
+hardcopy CP_Tuc.ps ##输出图像
+error 5   ##计算highT的误差范围
+save all test1.xcm  ##保存后方便下次直接载入@test1.xcm
+
+
+提交的光谱信息为图像（**.ps），参数拟合结果（截个图就行）以及highT的误差范围（示例如（4.23，10.78))
+另外请附上你的光谱文件以及响应文件。（*.pha，*.rmf，*.arf）
+
