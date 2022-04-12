@@ -12,6 +12,10 @@ https://wwwmpa.mpa-garching.mpg.de/RKcat/
 
 Or view in CDS: http://vizier.u-strasbg.fr/viz-bin/VizieR?-source=B/cb
 
+
+
+Download the data from heasarc archive: https://heasarc.gsfc.nasa.gov/cgi-bin/W3Browse/w3browse.pl
+
 # Analysis 
 https://www.cosmos.esa.int/web/xmm-newton/sas-threads
 
