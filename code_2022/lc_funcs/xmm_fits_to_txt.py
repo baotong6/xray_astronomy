@@ -27,6 +27,17 @@ def delete_photon_ID(time,energy,band):
         i=i+1
     return [time,energy]
 
+def check_gti(epoch,src_t):
+    ##check for ##
+    if len(epoch)==1:
+        print(np.where((src_t<epoch[0][0])|(src_t>epoch[0][1])))
+    for i in range(len(epoch)-1):
+        gap_start=epoch[i][1]
+        gap_stop=epoch[i+1][0]
+        t1=gap_stop-src_t
+        t2=src_t-gap_start
+        print(np.where((t1>0)&(t2>0)))
+
 def filter_energy(time,energy,band):
     T=time
     E=energy
@@ -45,7 +56,13 @@ def filter_energy(time,energy,band):
     return T
 def get_txt(path,obsID,mode,srcname,reg_cicrle,band=[200,10000]):
     ## reg_circle should be a list[reg_x,reg_y,reg_radius]
-    hdul_evt= fits.open(path+obsID+'/cal/'+mode+'_bary.fits')
+    hdul_evt= fits.open(path+obsID+'/cal/'+mode+'_filt_time_bary.fits')
+    gti_file=fits.open(path+obsID+'/cal/'+f'gti_{mode}.fits')
+    epoch=[]
+    gti_info=gti_file[1].data
+    for i in range(len(gti_info)):
+        epoch.append(list(gti_info[i]))
+    epoch=np.array(epoch)
     ## Be careful! Different column if used for other satellite-----
     x=hdul_evt[1].data['X']
     y=hdul_evt[1].data['Y']
@@ -58,19 +75,18 @@ def get_txt(path,obsID,mode,srcname,reg_cicrle,band=[200,10000]):
     src_y=y[src_index]
     src_t=time[src_index]
     src_E=energy[src_index]
-
     #src_***就是该源的所有光子的信息
 
-    [src_t,src_E]=delete_photon_ID(src_t,src_E,band=band)
+    # check_gti(epoch,src_t)
 
+    [src_t,src_E]=delete_photon_ID(src_t,src_E,band=band)
     src_txt=np.column_stack((src_t,src_E))
     src_txt = src_txt[src_txt[:,0].argsort()]
-    epoch=np.array([tstart,tstop])
     os.chdir(path+obsID)
     os.system('mkdir txt')
-    #os.system('rm ./txt/*.txt')
+    os.system('rm ./txt/*.txt')
     np.savetxt(path+obsID+ '/txt/' +srcname+'_'+mode+ '.txt', src_txt, fmt="%.7f  %.3f ")
-    np.savetxt(path+obsID + '/txt/' +'epoch_'+ srcname + '_' + mode + '.txt', [epoch],fmt="%.2f  %.2f ")
+    np.savetxt(path+obsID + '/txt/' +'epoch_'+ srcname + '_' + mode + '.txt', epoch,fmt="%.2f  %.2f ")
 
 if __name__=="__main__":
     print('How you doing?')

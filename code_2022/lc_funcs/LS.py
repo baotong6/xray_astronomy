@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.timeseries import LombScargle
+import lc_funcs as funcs
 
 font1 = {'family': 'Normal',
          'weight': 'normal',
@@ -44,6 +45,12 @@ def get_LS(time, flux,freq,outpath=None,outname=None,save=False,show=True):
     if show:plt.show()
     else:plt.close()
     return [FP,out_period,max_NormLSP]
+
+def plot_LS_fromevt(time,bin_len,freq=None):
+    lc=funcs.get_hist(time,len_bin=bin_len)
+    T_all=time[-1]-time[0];dt=bin_len
+    if freq is None: freq = np.arange(1 / T_all, 0.5 / dt, 1 / (5 * T_all))
+    get_LS(lc.time, lc.counts, freq)
 
 if __name__=="__main__":
     print('How you doing?')

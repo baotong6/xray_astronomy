@@ -15,11 +15,27 @@ import pandas as pd
 from astropy.timeseries import LombScargle
 import stingray
 from stingray import Lightcurve, Powerspectrum, AveragedPowerspectrum
+from stingray.events import EventList
 import lc_funcs as funcs
 
 font1 = {'family': 'Normal',
          'weight': 'normal',
          'size': 16, }
+
+def get_hist(t, len_bin,tstart=0,tstop=0):
+    ###将输入的time信息，按照len_bin的长度输出为lc
+    if tstart==0 and tstop==0:
+        tstart=t[0]
+        tstop=t[-1]
+        tseg=tstop-tstart
+    else:tseg=tstop-tstart
+
+    t_test = t;dt=len_bin
+    ev = EventList()
+    ev.time = t_test
+    lc_new = ev.to_lc(dt=dt, tstart=tstart, tseg=tseg)
+    return lc_new
+
 def plot_lc(time,flux):
     ## 画光变曲线，即光子流量随时间的变化 ##
     lc = Lightcurve(time, flux)
@@ -68,7 +84,7 @@ def plot_pds(time,flux):
         ax1.spines[axis].set_linewidth(1.5)
     plt.show()
 
-def read_SAS_lc(path,mode='pn',dt=5,freq=None):
+def plot_SAS_lc(path,mode='pn',dt=5,freq=None):
     # 1,2,3分别代表mos1,mos2,pn的light curve，也可以加起来用，记为_all;
     # 根据实际情况来决定lomb-scargle的输入
     # 要注意的是，如果在run_XMMproducts_spectra.py中没有自行指定tmin和tmax，这里就不能直接对三个detector的lc进行加减
@@ -87,6 +103,7 @@ def read_SAS_lc(path,mode='pn',dt=5,freq=None):
     plot_lc(time_all,rate_all)
     funcs.get_LS(time_all,rate_all,freq)
     # plot_pds(time_all,rate_all)
+
 
 if __name__ == "__main__":
     print('How you doing?')

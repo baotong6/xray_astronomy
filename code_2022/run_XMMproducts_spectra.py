@@ -31,13 +31,13 @@ det3 = "pn"
 detList = [det1,det2,det3]
 # -------------------------------
 process=0
-filt_particle_bkg=1
-lc=1
-spectra=0
+filt_particle_bkg=0
+lc=0
+spectra=1
 combine_spec=0
 
-ra=2.2390
-dec=1.2134
+ra=obsID=121.5956395511654
+dec=15.4586056893463
 ##改成你所做的源的坐标
 
 for obsID in obsList:
@@ -99,9 +99,9 @@ for obsID in obsList:
    # # ---------------------------------------------
    #---------reg def------------------------------------
    # ---------------------------------------------
-   srcName = "HM_Cnc"
-   srcReg = "circle(26444.219,27996.825,400.00)"
-   bkgReg = "circle(28149.159,25309.162,800.00026)"
+   srcName = "HM_CnC"
+   srcReg = "circle(26710.9,27840.9,400.00)"
+   bkgReg = "circle(28029.7,25976.26,800.00026)"
 
    ## 改成你所选取的region ##
 
@@ -117,11 +117,11 @@ for obsID in obsList:
          os.chdir(datapath)
 
          if det == "pn":
-             cmd = "evselect table=pn.fits withrateset=Y rateset=rateEPIC_pn.fits maketimecolumn=Y " \
+             cmd = "evselect table=pn_bary.fits withrateset=Y rateset=rateEPIC_pn.fits maketimecolumn=Y " \
                    "timebinsize=100 makeratecolumn=Y expression='#XMMEA_EP && (PI>10000&&PI<12000) && (PATTERN==0)'"
 
          else:
-            cmd = "evselect table={0}.fits withrateset=Y rateset=rateEPIC_{0}.fits maketimecolumn=Y " \
+            cmd = "evselect table={0}_bary.fits withrateset=Y rateset=rateEPIC_{0}.fits maketimecolumn=Y " \
                    "timebinsize=100 makeratecolumn=Y expression='#XMMEA_EM && (PI>10000) && (PATTERN==0)'".format(det)
          print(" ")
          print("1 make lc")
@@ -140,11 +140,11 @@ for obsID in obsList:
 
 
          if det == "pn":
-             cmd = "evselect table=pn.fits withfilteredset=yes expression='#XMMEA_EP && gti(gti_pn.fits,TIME) && (PI>150)' " \
-                   "filteredset=pn_filt_time.fits filtertype=expression keepfilteroutput=yes updateexposure=yes filterexposure=yes"
+             cmd = "evselect table=pn_bary.fits withfilteredset=yes expression='#XMMEA_EP && gti(gti_pn.fits,TIME) && (PI>150)' " \
+                   "filteredset=pn_filt_time_bary.fits filtertype=expression keepfilteroutput=yes updateexposure=yes filterexposure=yes"
          else:
-            cmd = "evselect table={0}.fits withfilteredset=yes expression=" \
-                  "'#XMMEA_EM && gti(gti_{0}.fits,TIME) && (PI>150)' filteredset={0}_filt_time.fits filtertype=expression keepfilteroutput=yes updateexposure=yes filterexposure=yes".format(det)
+            cmd = "evselect table={0}_bary.fits withfilteredset=yes expression=" \
+                  "'#XMMEA_EM && gti(gti_{0}.fits,TIME) && (PI>150)' filteredset={0}_filt_time_bary.fits filtertype=expression keepfilteroutput=yes updateexposure=yes filterexposure=yes".format(det)
 
          print(" ")
          print("3 filter GTI fits")
@@ -171,16 +171,16 @@ for obsID in obsList:
          print(sasname)
          os.environ['SAS_ODF'] = path + obsID + "/cal/"+sasname[0:-1]
          ###----------------------------------###
-         ##------barycen-----##
-         cmd = "cp " + det + "_filt_time.fits " + det + "_filt_time_bary.fits"
-         print(cmd)
-         os.system(cmd)
-         cmd = "barycen withtable=yes table=" + det + "_filt_time_bary.fits" + ": withsrccoordinates=yes srcra=" + str(
-            ra) + " srcdec=" + str(dec)
-         print(cmd)
-         os.system(cmd)
-         print("0 barycenter correction for cleaned events")
-
+         # ##------barycen-----##
+         # cmd = "cp " + det + "_filt_time.fits " + det + "_filt_time_bary.fits"
+         # print(cmd)
+         # os.system(cmd)
+         # cmd = "barycen withtable=yes table=" + det + "_filt_time_bary.fits" + ": withsrccoordinates=yes srcra=" + str(
+         #    ra) + " srcdec=" + str(dec)
+         # print(cmd)
+         # os.system(cmd)
+         #
+         # print("0 barycenter correction for cleaned events")
          ##------------------##
          if tmin==0 and tmax==0:
             event=fits.open(det+"_filt_time_bary.fits")
@@ -225,7 +225,7 @@ for obsID in obsList:
       for det in detList:
          print("running obsservation"+" "+obsID)
          print("running detector"+" "+det)
-         filt_label='_filt_time'
+         filt_label='_filt_time_bary'
 
          datapath = path+obsID+"/cal/"
          print(datapath)
