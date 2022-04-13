@@ -9,12 +9,12 @@ xspec  ##打开xspec
 da ***.pha       ##打开自己所研究源的光谱文件，如pn_RE1034_bin100.pha
 setp e           ##setplot energy的缩写，把横坐标改为能量
 cpd /xw          ##新建窗口
-ignore **-0.5    ##忽略小于0.5keV和大于10keV的光谱
+ignore **-0.2    ##忽略小于0.2keV和大于10keV的光谱
 ignore 10.-**    ##这里的数值请根据自己光谱的图像来调节
 pl ld            ##plot ldata的缩写，取对数并画图
-mo tb*(zpowerlw+bbody) ##拟合模型，模型为tbabs*(zpowerlw+bbody)
+mo tb*(zpowerlw+bbody) ##拟合模型，模型为tbabs*(zpowerlw+bbody),根据你所选的源来调整你的模型
 ##这个操作以后一直敲回车，跳过参数的初始值设置##
-new 3 0.042 -1    ##将模型的第三个参数（这里是红移）固定在0.042处（这取决于你做的源），第二个-1是与freeze 3同等的效果
+new 3 0.042 -1    ##将模型的第三个参数（这里是红移）固定在0.042处(这取决于你做的源),第二个-1是与freeze 3同等的效果
 fit                 ##开始拟合
 pl ld del           ##plot 并画出残差
 error 2             ##计算参数3，PhoIndex的误差范围
@@ -22,7 +22,7 @@ error 6             ##计算参数6，即黑体温度的误差
 cpd xxx.eps/cps  ##以下三步为输出图像
 plot ld del
 cpd /xs   
-save all test1.xcm  ##保存后方便下次直接载入@test1.xcm
+save all xxxx.xcm  ##保存后方便下次直接载入@xxxx.xcm
 
 最终的presentaion中应当附有光谱图像，拟合结果（可以做个表格）以及参数的误差范围
 
