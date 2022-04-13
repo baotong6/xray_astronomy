@@ -26,5 +26,5 @@ time = funcs.filter_energy(src_evt[:, 0], src_evt[:, 1], [200, 10000])
 funcs.phase_fold(time,epoch_info,p_test=321.4944,outpath=path+obsID+'/txt/',bin=30,net_percent=0.9,shift=0.0,label=srcname,save=False,show=True)
 
 ##------ 4. Lomb-Scargle periodogram ------###
-# funcs.read_SAS_lc(path=path+obsID+'/cal/',mode='pn',dt=5,freq=np.arange(1/5000.,0.5/5,1/500000))
+# funcs.plot_SAS_lc(path=path+obsID+'/cal/',mode='pn',dt=5,freq=np.arange(1/5000.,0.5/5,1/500000))
 funcs.plot_LS_fromevt(time,bin_len=100)
