@@ -12,7 +12,7 @@ cpd /xw          ##新建窗口
 ignore **-0.2    ##忽略小于0.2keV和大于10keV的光谱
 ignore 10.-**    ##这里的数值请根据自己光谱的图像来调节
 pl ld            ##plot ldata的缩写，取对数并画图
-mo tb*(zpowerlw+bbody) ##拟合模型，模型为tbabs*(zpowerlw+bbody),根据你所选的源来调整你的模型
+mo tb*(powerlw+bbody) ##拟合模型，例如这里的模型为tbabs*(powerlw+bbody),根据你所选的源来调整你的模型
 ##这个操作以后一直敲回车，跳过参数的初始值设置##
 new 3 0.042 -1    ##将模型的第三个参数（这里是红移）固定在0.042处(这取决于你做的源),第二个-1是与freeze 3同等的效果
 fit                 ##开始拟合

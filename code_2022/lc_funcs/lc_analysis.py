@@ -48,7 +48,8 @@ def plot_lc(time,flux):
     ax.tick_params(which='major', width=1.5, length=7)
     ax.tick_params(which='minor', width=1.5, length=4)
     plt.show()
-def plot_pds(time,flux):
+
+def plot_pds(lc):
     ## 画功率谱图 ##
     ps = Powerspectrum(lc,norm='leahy')
     ps = ps.rebin(df=2e-5)
